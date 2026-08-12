@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe, VersioningType } from '@nestjs/common';
 import { formatValidationErrors } from './common/utils/validation-error.util';
+import { setupSwagger } from './swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,7 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+  app.setGlobalPrefix(`${process.env.API_PREFIX}`);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -24,6 +26,7 @@ async function bootstrap() {
       },
     }),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  setupSwagger(app);
+  await app.listen(process.env.API_PORT ?? 8000);
 }
 bootstrap();
