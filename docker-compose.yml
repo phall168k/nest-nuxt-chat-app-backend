@@ -8,8 +8,9 @@ services:
       POSTGRES_DB: ${TYPEORM_DATABASE}
       POSTGRES_USER: ${TYPEORM_USERNAME}
       POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      PG_DATA: /var/lib/postgresql/data
     ports:
-      - "${TYPEORM_PORT}:532"
+      - ${TYPEORM_PORT}:5432
     volumes:
       - postgres_data_chat_app:/var/lib/postgresql/data
     healthcheck:
