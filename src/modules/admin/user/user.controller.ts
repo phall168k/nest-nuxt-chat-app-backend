@@ -26,7 +26,7 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: 'Find all users' })
-  @ApiOkResponse({ description: 'Find all users', isArray: true, type: [UserResponseDto] })
+  @ApiOkResponse({ description: 'Find all users', isArray: true, type: UserResponseDto })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   public findAll(): Promise<UserResponseDto[]> {
     return this.userService.findAll();
