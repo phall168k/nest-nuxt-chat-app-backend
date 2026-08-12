@@ -1,0 +1,63 @@
+services:
+  # Postgres
+  postgres:
+    image: postgres:16-alpine
+    container_name: chat-app-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+    ports:
+      - "${TYPEORM_PORT}:532"
+    volumes:
+      - postgres_data_chat_app:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${TYPEORM_USERNAME} -d ${TYPEORM_PASSWORD}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chat-app-network
+
+  # Minio
+  minio:
+    image: minio/minio:latest
+    container_name: chat-app-minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: {MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: {MINIO_SECRET_KEY}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data_chat_app:/data
+    healthcheck:
+      test: 
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:9000/minio/health/live"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - chat-app-network
+
+volumes:
+  postgres_data_chat_app:
+  minio_data_chat_app:
+
+networks:
+  chat-app-network:
+    driver: bridge
+
+    
