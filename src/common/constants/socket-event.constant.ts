@@ -1,4 +1,4 @@
-export const SOCKET_ENVENTS = {
+export const SOCKET_EVENTS = {
     USER: {
         ONLINE: 'user.online',
         OFFLINE: 'user.offline',
