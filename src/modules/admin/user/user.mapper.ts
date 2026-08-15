@@ -9,6 +9,7 @@ export class UserMapper {
         dto.id = entity.id;
         dto.username = entity.username;
         dto.fullName = entity.fullName;
+        dto.status = entity.status;
         dto.isActive = entity.isActive;
         dto.createdAt = entity.createdAt;
         dto.updatedAt = entity.updatedAt;

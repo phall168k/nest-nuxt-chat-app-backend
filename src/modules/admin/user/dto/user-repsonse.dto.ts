@@ -11,6 +11,9 @@ export class UserResponseDto {
     fullName: string;
 
     @ApiProperty()
+    status: boolean;
+
+    @ApiProperty()
     isActive: boolean;
 
     @ApiProperty()
