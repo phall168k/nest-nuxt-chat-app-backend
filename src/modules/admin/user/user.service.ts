@@ -86,4 +86,18 @@ export class UserService {
       handleError(error);
     }
   }
+
+  public async updateStatus(userId: string, status: boolean): Promise<void> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) throw new NotFoundException('User not found');
+      await this.userRepository.update({id: userId}, {status});
+    } catch (error) {
+      handleError(error);
+    }
+  }
 }
