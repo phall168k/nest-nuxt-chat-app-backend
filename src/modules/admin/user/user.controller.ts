@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, ParseUUIDPipe, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UpdateUserRequestDto } from './dto/update-user-request.dto';
 import { ApiBearerAuth, ApiConflictResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { SWAGGER_TOKEN_NAME } from 'src/swagger/config';
 import { UserResponseDto } from './dto/user-repsonse.dto';
+import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
+import { UserEntity } from './entities/user.entity';
 
 @ApiTags('User')
 @ApiBearerAuth(SWAGGER_TOKEN_NAME)
@@ -28,8 +30,8 @@ export class UserController {
   @ApiOperation({ summary: 'Find all users' })
   @ApiOkResponse({ description: 'Find all users', isArray: true, type: UserResponseDto })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  public findAll(): Promise<UserResponseDto[]> {
-    return this.userService.findAll();
+  public findAll(@CurrentUser() user: UserEntity): Promise<UserResponseDto[]> {
+    return this.userService.findAll(user.id);
   }
 
   @Get(':id')

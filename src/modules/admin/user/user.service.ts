@@ -3,7 +3,7 @@ import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UpdateUserRequestDto } from './dto/update-user-request.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { UserResponseDto } from './dto/user-repsonse.dto';
 import { handleError } from 'src/common/utils/handle-error.util';
 import { UserMapper } from './user.mapper';
@@ -31,11 +31,14 @@ export class UserService {
     }
   }
 
-  public async findAll(): Promise<UserResponseDto[]> {
+  public async findAll(userId: string): Promise<UserResponseDto[]> {
     try {
       const entities = await this.userRepository.find({
         order: {
           createdAt: 'DESC',
+        },
+        where: {
+          id: Not(userId),
         },
       });
       const items = Promise.all(
