@@ -25,6 +25,7 @@ import { SWAGGER_TOKEN_NAME } from 'src/swagger/config';
 import { UserResponseDto } from '../../system/user/dto/user-repsonse.dto';
 import { CreateSprintRequestDto } from './dto/create-sprint-request.dto';
 import { SprintResponseDto } from './dto/sprint-response.dto';
+import { SprintSelectOptionResponseDto } from './dto/sprint-select-option-response.dto';
 import { UpdateSprintRequestDto } from './dto/update-sprint-request.dto';
 import { SprintEntity, SprintStatus } from './entities/sprint.entity';
 import { SprintService } from './sprint.service';
@@ -59,6 +60,18 @@ export class SprintController {
     @Paginate() query: PaginateQuery,
   ): Promise<PaginatedResponse<SprintEntity, SprintResponseDto>> {
     return this.sprintService.list(query);
+  }
+
+  @Get('select-options')
+  @ApiOperation({ summary: 'Get sprint select options' })
+  @ApiOkResponse({
+    description: 'Sprint select options',
+    type: SprintSelectOptionResponseDto,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  public selectOptions(): Promise<SprintSelectOptionResponseDto[]> {
+    return this.sprintService.selectOptions();
   }
 
   @Get(':id')

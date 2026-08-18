@@ -10,6 +10,7 @@ import { BasePaginationCrudService } from 'src/common/services/base-pagination-c
 import { handleError } from 'src/common/utils/handle-error.util';
 import { CreateSprintRequestDto } from './dto/create-sprint-request.dto';
 import { SprintResponseDto } from './dto/sprint-response.dto';
+import { SprintSelectOptionResponseDto } from './dto/sprint-select-option-response.dto';
 import { UpdateSprintRequestDto } from './dto/update-sprint-request.dto';
 import { SprintEntity } from './entities/sprint.entity';
 import { SprintMapper } from './sprint.mapper';
@@ -86,6 +87,18 @@ export class SprintService extends BasePaginationCrudService<
       });
       if (!entity) throw new NotFoundException('Sprint not found');
       return SprintMapper.toDto(entity);
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  public async selectOptions(): Promise<SprintSelectOptionResponseDto[]> {
+    try {
+      const entities = await this.sprintRepository.find({
+        select: { id: true, name: true },
+        order: { name: 'ASC' },
+      });
+      return entities.map((entity) => SprintMapper.toSelectOptionDto(entity));
     } catch (error) {
       handleError(error);
     }

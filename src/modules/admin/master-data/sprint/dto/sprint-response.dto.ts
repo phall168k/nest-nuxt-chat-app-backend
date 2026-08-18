@@ -22,6 +22,9 @@ export class SprintResponseDto {
   @ApiPropertyOptional({ enum: SprintStatus, nullable: true })
   status?: SprintStatus | null;
 
+  @ApiProperty({ default: 0 })
+  taskCount: number;
+
   @ApiProperty({ format: 'uuid' })
   projectId: string;
 

@@ -2,10 +2,20 @@ import { UserMapper } from '../../system/user/user.mapper';
 import { ProjectMapper } from '../project/project.mapper';
 import { CreateSprintRequestDto } from './dto/create-sprint-request.dto';
 import { SprintResponseDto } from './dto/sprint-response.dto';
+import { SprintSelectOptionResponseDto } from './dto/sprint-select-option-response.dto';
 import { UpdateSprintRequestDto } from './dto/update-sprint-request.dto';
 import { SprintEntity } from './entities/sprint.entity';
 
 export class SprintMapper {
+  public static toSelectOptionDto(
+    entity: SprintEntity,
+  ): SprintSelectOptionResponseDto {
+    const dto = new SprintSelectOptionResponseDto();
+    dto.id = entity.id;
+    dto.name = entity.name;
+    return dto;
+  }
+
   public static async toDto(entity: SprintEntity): Promise<SprintResponseDto> {
     const dto = new SprintResponseDto();
     dto.id = entity.id;
@@ -14,6 +24,7 @@ export class SprintMapper {
     dto.startDate = entity.startDate;
     dto.endDate = entity.endDate;
     dto.status = entity.status;
+    dto.taskCount = entity.taskCount ?? 0;
     dto.projectId = entity.projectId;
     dto.createdByUserId = entity.createdByUserId;
     dto.createdAt = entity.createdAt;

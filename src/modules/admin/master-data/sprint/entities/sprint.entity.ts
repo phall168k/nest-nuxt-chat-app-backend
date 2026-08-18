@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
+  VirtualColumn,
 } from 'typeorm';
 import { UserEntity } from 'src/modules/admin/system/user/entities/user.entity';
 import { ProjectEntity } from '../../project/entities/project.entity';
@@ -37,6 +38,13 @@ export class SprintEntity {
 
   @Column({ name: 'status', type: 'enum', enum: SprintStatus, nullable: true })
   status?: SprintStatus | null;
+
+  @VirtualColumn({
+    type: 'int',
+    query: (alias) =>
+      `SELECT COUNT(*) FROM "public"."tasks" WHERE "sprint_id" = ${alias}."id"`,
+  })
+  taskCount: number;
 
   @Column({ name: 'project_id', type: 'uuid' })
   projectId: string;
