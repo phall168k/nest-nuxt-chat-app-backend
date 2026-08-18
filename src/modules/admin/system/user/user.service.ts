@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Not, Repository } from 'typeorm';
 import { UserResponseDto } from './dto/user-repsonse.dto';
+import { UserSelectOptionResponseDto } from './dto/user-select-option-response.dto';
 import { handleError } from 'src/common/utils/handle-error.util';
 import { UserMapper } from './user.mapper';
 import { PasswordHash } from 'src/common/utils/password-hash.util';
@@ -71,6 +72,18 @@ export class UserService extends BasePaginationCrudService<
       const entity = await this.userRepository.findOneBy({ id });
       if (!entity) throw new NotFoundException('User not found');
       return UserMapper.toDto(entity);
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  public async selectOptions(): Promise<UserSelectOptionResponseDto[]> {
+    try {
+      const entities = await this.userRepository.find({
+        select: { id: true, fullName: true },
+        order: { fullName: 'ASC' },
+      });
+      return entities.map((entity) => UserMapper.toSelectOptionDto(entity));
     } catch (error) {
       handleError(error);
     }

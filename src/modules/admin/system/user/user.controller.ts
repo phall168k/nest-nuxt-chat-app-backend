@@ -5,6 +5,7 @@ import { UpdateUserRequestDto } from './dto/update-user-request.dto';
 import { ApiBearerAuth, ApiConflictResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { SWAGGER_TOKEN_NAME } from 'src/swagger/config';
 import { UserResponseDto } from './dto/user-repsonse.dto';
+import { UserSelectOptionResponseDto } from './dto/user-select-option-response.dto';
 import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
 import { UserEntity } from './entities/user.entity';
 import { ApiPaginatedResponse } from 'src/common/paginations/api-paginated-response.decorator';
@@ -34,6 +35,18 @@ export class UserController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   public findAll(@Paginate() query: PaginateQuery): Promise<PaginatedResponse<UserEntity, UserResponseDto>>{
     return this.userService.list(query);
+  }
+
+  @Get('select-options')
+  @ApiOperation({ summary: 'Get user select options' })
+  @ApiOkResponse({
+    description: 'User select options',
+    type: UserSelectOptionResponseDto,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  public selectOptions(): Promise<UserSelectOptionResponseDto[]> {
+    return this.userService.selectOptions();
   }
 
   @Get(':id')

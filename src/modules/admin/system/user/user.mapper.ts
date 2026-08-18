@@ -1,9 +1,17 @@
 import { CreateUserRequestDto } from "./dto/create-user-request.dto";
 import { UpdateUserRequestDto } from "./dto/update-user-request.dto";
 import { UserResponseDto } from "./dto/user-repsonse.dto";
+import { UserSelectOptionResponseDto } from "./dto/user-select-option-response.dto";
 import { UserEntity } from "./entities/user.entity";
 
 export class UserMapper {
+    public static toSelectOptionDto(entity: UserEntity): UserSelectOptionResponseDto {
+        const dto = new UserSelectOptionResponseDto();
+        dto.id = entity.id;
+        dto.fullName = entity.fullName;
+        return dto;
+    }
+
     public static async toDto(entity: UserEntity): Promise<UserResponseDto> {
         const dto = new UserResponseDto();
         dto.id = entity.id;
