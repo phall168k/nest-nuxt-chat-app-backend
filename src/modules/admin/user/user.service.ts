@@ -31,23 +31,8 @@ export class UserService {
     }
   }
 
-  public async findAll(userId: string): Promise<UserResponseDto[]> {
-    try {
-      const entities = await this.userRepository.find({
-        order: {
-          createdAt: 'DESC',
-        },
-        where: {
-          id: Not(userId),
-        },
-      });
-      const items = Promise.all(
-        entities.map((item) => UserMapper.toDto(item)),
-      );
-      return items;
-    } catch (error) {
-      handleError(error);
-    }
+  public async findAll(userId: string): Promise<any[]> {
+    return [];
   }
 
   public async findOne(id: string): Promise<UserResponseDto> {

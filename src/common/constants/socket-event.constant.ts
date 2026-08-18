@@ -7,12 +7,14 @@ export const SOCKET_EVENTS = {
 
     MESSAGE: {
         SEND: 'message.send',
-        SENT: 'message.sent',
+        CREATED: 'message.created',
         RECEIVED: 'message.received',
         UPDATED: 'message.updated',
         DELETED: 'message.deleted',
         READ: 'message.read',
         TYPING: 'message.typing',
         STOP_TYPING: 'message.stop_typing',
+        MESSAGE_READ_UPDATE: 'message.read.update',
+        MESSAGE_IS_READ: 'message.is.read',
     }
 }

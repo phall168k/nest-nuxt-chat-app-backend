@@ -50,6 +50,10 @@ export class UserStatusGateway
       // Update datebase
       await this.userService.updateStatus(userId, status);
 
+      if (status === true) {
+        await client.join(`user:${userId}`);
+      }
+
       // Notify all connected clients
       this.server.emit(SOCKET_EVENTS.USER.STATUS_CHANGE, {
         userId,

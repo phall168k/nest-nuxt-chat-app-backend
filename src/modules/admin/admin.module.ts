@@ -7,7 +7,7 @@ import { UserStatusModule } from './user-status/user-status.module';
   imports: [
     JwtBaseModule,
     UserModule,
-    UserStatusModule, 
+    UserStatusModule,
   ]
 })
 export class AdminModule {}

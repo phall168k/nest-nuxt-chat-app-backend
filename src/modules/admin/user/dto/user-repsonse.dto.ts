@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class UserResponseDto {
     @ApiProperty()
@@ -21,4 +21,13 @@ export class UserResponseDto {
 
     @ApiProperty()
     updatedAt: Date;
+
+    @ApiPropertyOptional({ type: String, nullable: true })
+    lastMessage?: string | null;
+
+    @ApiPropertyOptional({ type: Date, nullable: true })
+    lastMessageAt?: Date | null;
+
+    @ApiPropertyOptional({ type: Number, default: 0 })
+    unreadCount?: number;
 }
