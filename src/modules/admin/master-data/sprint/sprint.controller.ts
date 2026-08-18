@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -64,14 +65,23 @@ export class SprintController {
 
   @Get('select-options')
   @ApiOperation({ summary: 'Get sprint select options' })
+  @ApiQuery({
+    name: 'projectId',
+    required: true,
+    type: String,
+    format: 'uuid',
+    description: 'Only return sprints belonging to this project',
+  })
   @ApiOkResponse({
     description: 'Sprint select options',
     type: SprintSelectOptionResponseDto,
     isArray: true,
   })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  public selectOptions(): Promise<SprintSelectOptionResponseDto[]> {
-    return this.sprintService.selectOptions();
+  public selectOptions(
+    @Query('projectId', ParseUUIDPipe) projectId: string,
+  ): Promise<SprintSelectOptionResponseDto[]> {
+    return this.sprintService.selectOptions(projectId);
   }
 
   @Get(':id')

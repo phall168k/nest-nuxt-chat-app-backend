@@ -92,10 +92,13 @@ export class SprintService extends BasePaginationCrudService<
     }
   }
 
-  public async selectOptions(): Promise<SprintSelectOptionResponseDto[]> {
+  public async selectOptions(
+    projectId: string,
+  ): Promise<SprintSelectOptionResponseDto[]> {
     try {
       const entities = await this.sprintRepository.find({
         select: { id: true, name: true },
+        where: { projectId },
         order: { name: 'ASC' },
       });
       return entities.map((entity) => SprintMapper.toSelectOptionDto(entity));
