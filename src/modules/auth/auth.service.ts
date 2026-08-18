@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../admin/user/user.service';
+import { UserService } from '../admin/system/user/user.service';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
 import { SignUpResponseDto } from './dto/sign-up-response.dto';
 import { handleError } from 'src/common/utils/handle-error.util';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
 import { SignInResponseDto } from './dto/sign-in-response.dto';
 import { PasswordHash } from 'src/common/utils/password-hash.util';
-import { UserMapper } from '../admin/user/user.mapper';
+import { UserMapper } from '../admin/system/user/user.mapper';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
+import { UserModule } from './system/user/user.module';
 import { JwtBaseModule } from 'src/common/modules/jwt-base.module';
-import { UserStatusModule } from './user-status/user-status.module';
+import { SystemModule } from './system/system.module';
 
 @Module({
   imports: [
     JwtBaseModule,
     UserModule,
-    UserStatusModule,
+    SystemModule,
   ]
 })
 export class AdminModule {}

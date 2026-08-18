@@ -6,9 +6,9 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserResponseDto } from 'src/modules/admin/user/dto/user-repsonse.dto';
-import { UserMapper } from 'src/modules/admin/user/user.mapper';
-import { UserService } from 'src/modules/admin/user/user.service';
+import { UserResponseDto } from 'src/modules/admin/system/user/dto/user-repsonse.dto';
+import { UserMapper } from 'src/modules/admin/system/user/user.mapper';
+import { UserService } from 'src/modules/admin/system/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

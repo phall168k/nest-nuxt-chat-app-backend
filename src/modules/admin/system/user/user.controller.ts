@@ -11,7 +11,7 @@ import { UserEntity } from './entities/user.entity';
 @ApiTags('User')
 @ApiBearerAuth(SWAGGER_TOKEN_NAME)
 @Controller({
-  path: 'admin/users',
+  path: 'admin/system/users',
   version: '1',
 })
 export class UserController {
