@@ -7,6 +7,9 @@ import { SWAGGER_TOKEN_NAME } from 'src/swagger/config';
 import { UserResponseDto } from './dto/user-repsonse.dto';
 import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
 import { UserEntity } from './entities/user.entity';
+import { ApiPaginatedResponse } from 'src/common/paginations/api-paginated-response.decorator';
+import { Paginate, type PaginateQuery } from 'nestjs-paginate';
+import { PaginatedResponse } from 'src/common/paginations/paginated-response.type';
 
 @ApiTags('User')
 @ApiBearerAuth(SWAGGER_TOKEN_NAME)
@@ -27,11 +30,10 @@ export class UserController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Find all users' })
-  @ApiOkResponse({ description: 'Find all users', isArray: true, type: UserResponseDto })
+  @ApiPaginatedResponse(UserResponseDto)
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  public findAll(@CurrentUser() user: UserEntity): Promise<any[]> {
-    return this.userService.findAll(user.id);
+  public findAll(@Paginate() query: PaginateQuery): Promise<PaginatedResponse<UserEntity, UserResponseDto>>{
+    return this.userService.list(query);
   }
 
   @Get(':id')

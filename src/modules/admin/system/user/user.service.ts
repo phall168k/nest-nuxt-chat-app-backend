@@ -8,13 +8,48 @@ import { UserResponseDto } from './dto/user-repsonse.dto';
 import { handleError } from 'src/common/utils/handle-error.util';
 import { UserMapper } from './user.mapper';
 import { PasswordHash } from 'src/common/utils/password-hash.util';
+import { BasePaginationCrudService } from 'src/common/services/base-pagination-crud.service';
 
 @Injectable()
-export class UserService {
+export class UserService extends BasePaginationCrudService<
+  UserEntity,
+  UserResponseDto
+>{
+
+  protected SORTABLE_COLUMNS = [
+    'id',
+    'username',
+    'fullName',
+    'status'
+  ];
+  protected FILTER_COLUMNS = [
+    'username',
+    'fullName',
+    'status'
+  ];
+  protected SEARCHABLE_COLUMNS = [
+    'username',
+    'fullName',
+    'status'
+  ];
+  protected RELATIONSIP_FIELDS = [];
+
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  ) {
+    super();
+  }
+
+  protected get repository(): Repository<UserEntity> {
+    return this.userRepository;
+  }
+
+  protected getMapperReponseEntityField(
+    entities: UserEntity,
+  ): Promise<UserResponseDto> {
+    return UserMapper.toDto(entities);
+  }
 
   public async create(dto: CreateUserRequestDto): Promise<UserResponseDto> {
     try {
@@ -29,10 +64,6 @@ export class UserService {
     } catch (error) {
       handleError(error);
     }
-  }
-
-  public async findAll(userId: string): Promise<any[]> {
-    return [];
   }
 
   public async findOne(id: string): Promise<UserResponseDto> {
