@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe, VersioningType } from '@nestjs/common';
 import { formatValidationErrors } from './common/utils/validation-error.util';
 import { setupSwagger } from './swagger';
+import { HttpResponseInterceptor } from './common/http/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,6 +28,7 @@ async function bootstrap() {
     }),
   );
   setupSwagger(app);
+  app.useGlobalInterceptors(new HttpResponseInterceptor());
   await app.listen(process.env.API_PORT ?? 8000);
 }
 bootstrap();
