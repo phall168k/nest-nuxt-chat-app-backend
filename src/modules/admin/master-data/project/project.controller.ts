@@ -25,6 +25,7 @@ import { SWAGGER_TOKEN_NAME } from 'src/swagger/config';
 import { UserResponseDto } from '../../system/user/dto/user-repsonse.dto';
 import { CreateProjectRequestDto } from './dto/create-project-request.dto';
 import { ProjectResponseDto } from './dto/project-response.dto';
+import { ProjectSelectOptionResponseDto } from './dto/project-select-option-response.dto';
 import { UpdateProjectRequestDto } from './dto/update-project-request.dto';
 import { ProjectEntity, ProjectStatus } from './entities/project.entity';
 import { ProjectService } from './project.service';
@@ -61,6 +62,18 @@ export class ProjectController {
     @Paginate() query: PaginateQuery,
   ): Promise<PaginatedResponse<ProjectEntity, ProjectResponseDto>> {
     return this.projectService.list(query);
+  }
+
+  @Get('select-options')
+  @ApiOperation({ summary: 'Get project select options' })
+  @ApiOkResponse({
+    description: 'Project select options',
+    type: ProjectSelectOptionResponseDto,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  public selectOptions(): Promise<ProjectSelectOptionResponseDto[]> {
+    return this.projectService.selectOptions();
   }
 
   @Get(':id')

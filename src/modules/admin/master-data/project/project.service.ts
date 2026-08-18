@@ -6,6 +6,7 @@ import { BasePaginationCrudService } from 'src/common/services/base-pagination-c
 import { handleError } from 'src/common/utils/handle-error.util';
 import { CreateProjectRequestDto } from './dto/create-project-request.dto';
 import { ProjectResponseDto } from './dto/project-response.dto';
+import { ProjectSelectOptionResponseDto } from './dto/project-select-option-response.dto';
 import { UpdateProjectRequestDto } from './dto/update-project-request.dto';
 import { ProjectEntity } from './entities/project.entity';
 import { ProjectMapper } from './project.mapper';
@@ -70,6 +71,18 @@ export class ProjectService extends BasePaginationCrudService<
       const entity = await this.projectRepository.findOneBy({ id });
       if (!entity) throw new NotFoundException('Project not found');
       return ProjectMapper.toDto(entity);
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  public async selectOptions(): Promise<ProjectSelectOptionResponseDto[]> {
+    try {
+      const entities = await this.projectRepository.find({
+        select: { id: true, nameEn: true, nameKh: true },
+        order: { nameEn: 'ASC' },
+      });
+      return entities.map((entity) => ProjectMapper.toSelectOptionDto(entity));
     } catch (error) {
       handleError(error);
     }

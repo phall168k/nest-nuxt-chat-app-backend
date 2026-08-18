@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
+  VirtualColumn,
 } from 'typeorm';
 import { UserEntity } from 'src/modules/admin/system/user/entities/user.entity';
 
@@ -49,6 +50,13 @@ export class ProjectEntity {
     nullable: true,
   })
   status?: ProjectStatus | null;
+
+  @VirtualColumn({
+    type: 'int',
+    query: (alias) =>
+      `SELECT COUNT(*) FROM "public"."sprints" WHERE "project_id" = ${alias}."id"`,
+  })
+  sprintCount: number;
 
   @Column({
     name: 'created_by_user_id',

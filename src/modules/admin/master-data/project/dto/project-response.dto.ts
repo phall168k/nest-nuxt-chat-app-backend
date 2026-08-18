@@ -15,6 +15,9 @@ export class ProjectResponseDto {
   @ApiPropertyOptional({ enum: ProjectStatus, nullable: true })
   status?: ProjectStatus | null;
 
+  @ApiProperty({ default: 0 })
+  sprintCount: number;
+
   @ApiProperty()
   createdByUserId: string;
 
