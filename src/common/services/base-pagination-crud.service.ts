@@ -6,7 +6,7 @@ import {
 } from 'nestjs-paginate';
 import { ObjectLiteral, Repository } from 'typeorm';
 import { PaginatedResponse } from '../paginations/paginated-response.type';
-import { handleError } from '@libs/utils/handle-error.util';
+import { handleError } from '../utils/handle-error.util';
 
 export abstract class BasePaginationCrudService<T extends ObjectLiteral, K> {
   protected abstract repository: Repository<T>;
