@@ -68,9 +68,11 @@ export class TaskGateway {
         });
         this.server
           .emit(SOCKET_EVENTS.TASK.UPDATED, task);
-        this.server
-          .to(`user:${task.reportToUserId}`)
-          .emit(SOCKET_EVENTS.NOTIFICATION.LIVE, notification);
+        if (userId !== task.reportToUserId)  {
+          this.server
+            .to(`user:${task.reportToUserId}`)
+            .emit(SOCKET_EVENTS.NOTIFICATION.LIVE, notification);
+        }
       return {
         success: true,
         data: task,
