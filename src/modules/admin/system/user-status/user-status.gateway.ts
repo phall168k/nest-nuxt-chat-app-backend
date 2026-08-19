@@ -51,6 +51,10 @@ export class UserStatusGateway
       await this.userService.updateStatus(userId, status);
 
       if (status === true) {
+        client.data.user = {
+          id: payload.id,
+          email: payload.email,
+        };
         await client.join(`user:${userId}`);
       }
 
