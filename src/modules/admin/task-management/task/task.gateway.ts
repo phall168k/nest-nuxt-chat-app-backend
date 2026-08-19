@@ -41,6 +41,10 @@ export class TaskGateway {
       this.server
         .to(`user:${task.assignToUserId}`)
         .emit(SOCKET_EVENTS.NOTIFICATION.LIVE, notification);
+      return {
+        success: true,
+        data: task,
+      }
     } catch (error) {
       handleWsError(error);
     }
@@ -66,7 +70,11 @@ export class TaskGateway {
           .emit(SOCKET_EVENTS.TASK.UPDATED, task);
         this.server
           .to(`user:${task.reportToUserId}`)
-          .emit(SOCKET_EVENTS.NOTIFICATION.LIVE, notification);    
+          .emit(SOCKET_EVENTS.NOTIFICATION.LIVE, notification);
+      return {
+        success: true,
+        data: task,
+      };    
     } catch (error) {
       handleWsError(error);
     }
@@ -88,6 +96,10 @@ export class TaskGateway {
       await this.taskService.remove(data.id);
       this.server
         .emit(SOCKET_EVENTS.TASK.DELETED, task);
+      return {
+        success: true,
+        data: task,
+      };
     } catch (error) {
       handleWsError(error)
     }
