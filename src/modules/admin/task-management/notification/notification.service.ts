@@ -100,6 +100,31 @@ export class NotificationService extends BasePaginationCrudService<
     }
   }
 
+  public async findByReceiverId(receiverId: string): Promise<NotificationResponseDto[]> {
+    try {
+      const entities = await this.notificationRepository.find({
+        relations: {
+          sender: true,
+          receiver: true,
+          task: true,
+        },
+        where: {
+          receiverId: receiverId,
+        },
+        order: {
+          createdAt: 'DESC',
+        },
+        take: 10,
+      });
+      const items = Promise.all(
+        entities.map((item) => NotificationMapper.toDto(item)),
+      );
+      return items;
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
   public async update(
     id: string,
     dto: UpdateNotificationDto,

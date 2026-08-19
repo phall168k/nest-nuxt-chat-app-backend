@@ -29,5 +29,6 @@ export const SOCKET_EVENTS = {
 
     NOTIFICATION: {
         LIVE: 'notification.live',
+        IS_RED: 'notification.red',
     },
 }

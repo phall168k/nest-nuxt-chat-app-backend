@@ -25,6 +25,8 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 import { NotificationResponseDto } from './dto/notification-response.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { NotificationEntity } from './entities/notification.entity';
+import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator';
+import { UserEntity } from '../../system/user/entities/user.entity';
 
 @ApiTags('Notification')
 @ApiBearerAuth(SWAGGER_TOKEN_NAME)
@@ -52,6 +54,20 @@ export class NotificationController {
     @Paginate() query: PaginateQuery,
   ): Promise<PaginatedResponse<NotificationEntity, NotificationResponseDto>> {
     return this.notificationService.list(query);
+  }
+
+  @Get('/receivers')
+  @ApiOperation({ summary: 'Find notifications by receiver id' })
+  @ApiOkResponse({
+    description: 'Notification found',
+    type: NotificationResponseDto,
+    isArray: true,
+  })
+  @ApiNotFoundResponse({ description: 'Notification not found' })
+  public findByReceiverId(
+    @CurrentUser() user: UserEntity,
+  ): Promise<NotificationResponseDto[]> {
+    return this.notificationService.findByReceiverId(user.id);
   }
 
   @Get(':id')
